@@ -499,7 +499,7 @@ footer {
 }
 .plan-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
   width: min(1180px, calc(100% - 36px));
   margin: 18px auto 0;
@@ -509,6 +509,13 @@ footer {
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 22px;
   background: linear-gradient(180deg, rgba(7,21,22,0.9), rgba(2,8,8,0.76));
+}
+.plan-grid .test-plan {
+  border-color: rgba(255,122,26,0.58);
+  box-shadow: 0 0 38px rgba(255,122,26,0.1);
+}
+.plan-grid .test-plan span {
+  color: var(--orange);
 }
 .plan-grid .highlight-plan {
   border-color: rgba(121,255,76,0.55);
