@@ -237,6 +237,10 @@
             <span>E-mail da conta NorviCam</span>
             <input id="checkout-email" type="email" autocomplete="email" placeholder="seuemail@exemplo.com" />
           </label>
+          <label class="checkout-field" for="checkout-document">
+            <span>CPF ou CNPJ</span>
+            <input id="checkout-document" type="text" inputmode="numeric" autocomplete="off" placeholder="Somente números" />
+          </label>
           <p class="checkout-message" id="checkout-message">PIX normalmente libera em poucos minutos. Boleto pode demorar mais para compensar.</p>
         </div>
         <div class="plan-grid">
@@ -297,6 +301,7 @@
     <script>
       const checkoutUrl = "https://raopmnendwyzmkmexgjf.supabase.co/functions/v1/create-payment";
       const emailInput = document.getElementById("checkout-email");
+      const documentInput = document.getElementById("checkout-document");
       const checkoutMessage = document.getElementById("checkout-message");
       const planButtons = Array.from(document.querySelectorAll(".plan-pay"));
 
@@ -305,15 +310,35 @@
         checkoutMessage.className = `checkout-message ${type}`.trim();
       }
 
+      function onlyDigits(value) {
+        return value.replace(/\D/g, "");
+      }
+
       function isValidEmail(email) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
       }
 
+      function isValidDocument(value) {
+        const digits = onlyDigits(value);
+        return digits.length === 11 || digits.length === 14;
+      }
+
+      documentInput.addEventListener("input", () => {
+        documentInput.value = onlyDigits(documentInput.value).slice(0, 14);
+      });
+
       async function startCheckout(plan) {
         const email = emailInput.value.trim().toLowerCase();
+        const cpfCnpj = onlyDigits(documentInput.value);
+
         if (!isValidEmail(email)) {
           setCheckoutMessage("Informe o mesmo e-mail usado na conta do app antes de escolher o plano.", "error");
           emailInput.focus();
+          return;
+        }
+        if (!isValidDocument(cpfCnpj)) {
+          setCheckoutMessage("Informe CPF ou CNPJ para gerar a cobrança no Asaas.", "error");
+          documentInput.focus();
           return;
         }
 
@@ -324,7 +349,7 @@
           const response = await fetch(checkoutUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, plan }),
+            body: JSON.stringify({ email, cpfCnpj, plan }),
           });
           const data = await response.json().catch(() => ({}));
           if (!response.ok || !data.invoiceUrl) {
