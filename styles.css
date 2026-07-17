@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   color-scheme: dark;
   --bg: #020908;
   --panel: rgba(5, 18, 18, 0.82);
@@ -349,3 +349,116 @@ footer {
 
 
 
+
+.install-guide {
+  width: min(1180px, calc(100% - 36px));
+  margin: 34px auto 0;
+  padding: clamp(24px, 4vw, 42px);
+  border: 1px solid rgba(121,255,76,0.26);
+  border-radius: 30px;
+  background: linear-gradient(135deg, rgba(121,255,76,0.07), rgba(255,122,26,0.07)), rgba(5,18,18,0.78);
+}
+.install-intro {
+  max-width: 880px;
+  margin: 0 auto 26px;
+  color: #d9e7e3;
+  font-size: 18px;
+  line-height: 1.55;
+  text-align: center;
+}
+.install-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.install-grid article {
+  position: relative;
+  overflow: hidden;
+  padding: 12px 12px 18px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 22px;
+  background: rgba(0,0,0,0.32);
+}
+.install-grid img {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.install-grid b {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  margin: 14px 0 10px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--green);
+  color: #061008;
+  font-weight: 1000;
+}
+.install-grid h3 {
+  margin: 0 0 8px;
+  font-size: 19px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.install-grid p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.price-note {
+  margin-top: 12px;
+  font-size: 14px;
+}
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  width: min(1180px, calc(100% - 36px));
+  margin: 18px auto 0;
+}
+.plan-grid article {
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(7,21,22,0.9), rgba(2,8,8,0.76));
+}
+.plan-grid .highlight-plan {
+  border-color: rgba(121,255,76,0.55);
+  box-shadow: 0 0 44px rgba(121,255,76,0.1);
+}
+.plan-grid span {
+  display: block;
+  color: var(--green);
+  font-weight: 950;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.plan-grid strong {
+  display: block;
+  color: #fff;
+  font-size: 34px;
+  line-height: 1;
+}
+.plan-grid small {
+  display: block;
+  margin-top: 8px;
+  color: var(--orange);
+  font-weight: 800;
+}
+.plan-grid p {
+  margin: 14px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+@media (max-width: 980px) {
+  .install-grid, .plan-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .install-guide { padding: 22px 14px; }
+  .install-grid, .plan-grid { grid-template-columns: 1fr; }
+}
