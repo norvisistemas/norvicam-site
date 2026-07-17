@@ -279,19 +279,92 @@ h3 { font-size: 32px; margin-bottom: 10px; text-transform: uppercase; }
 }
 
 .gear-section {
-  display: grid;
-  grid-template-columns: 0.85fr 1fr;
-  gap: 28px;
-  align-items: center;
-  margin-top: 34px;
+  width: min(1180px, calc(100% - 36px));
+  margin: 34px auto 0;
   padding: clamp(24px, 4vw, 42px);
   border: 1px solid rgba(121,255,76,0.22);
   border-radius: 28px;
-  background: linear-gradient(135deg, rgba(121,255,76,0.08), rgba(255,122,26,0.08)), var(--panel);
+  background: linear-gradient(135deg, rgba(121,255,76,0.07), rgba(255,122,26,0.08)), var(--panel);
 }
-.gear-media img { width: 100%; max-height: 460px; object-fit: cover; border-radius: 22px; background: #fff; }
-.gear-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 26px; }
-.gear-actions span { color: var(--muted); font-size: 14px; }
+.gear-intro {
+  max-width: 860px;
+  margin: 0 auto 26px;
+  color: #d9e7e3;
+  text-align: center;
+  line-height: 1.55;
+  font-size: 18px;
+}
+.gear-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.support-card {
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(7,21,22,0.92), rgba(2,8,8,0.8));
+  box-shadow: 0 22px 70px rgba(0,0,0,0.22);
+}
+.support-card img {
+  width: 100%;
+  aspect-ratio: 1 / 0.78;
+  object-fit: cover;
+  background: #fff;
+}
+.support-card > div {
+  padding: 22px;
+}
+.support-tag {
+  display: inline-flex;
+  margin-bottom: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(121,255,76,0.16);
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+.support-tag.orange {
+  background: rgba(255,122,26,0.16);
+  color: var(--orange);
+}
+.support-card h3 {
+  margin: 0 0 10px;
+  font-size: 24px;
+  letter-spacing: 0;
+}
+.support-card p {
+  margin: 0;
+  min-height: 88px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.support-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+.support-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(121,255,76,0.45);
+  color: #07110b;
+  background: linear-gradient(135deg, var(--green), #2edb63);
+  font-size: 13px;
+  font-weight: 950;
+  text-transform: uppercase;
+  text-align: center;
+}
+.support-actions a + a {
+  border-color: rgba(255,122,26,0.6);
+  background: linear-gradient(135deg, var(--orange), var(--yellow));
+}
 
 .premium-card {
   display: grid;
@@ -415,7 +488,8 @@ footer {
   .hero { grid-template-columns: 1fr; }
   .hero-visual { justify-content: flex-start; }
   .steps-grid, .benefits-grid, .showcase { grid-template-columns: 1fr 1fr; }
-  .permissions, .gear-section, .premium-card, .faq > div { grid-template-columns: 1fr; }
+  .permissions, .premium-card, .faq > div { grid-template-columns: 1fr; }
+  .gear-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 620px) {
   .topbar { padding: 14px 16px; }
@@ -424,9 +498,9 @@ footer {
   .brand-mark { width: 38px; height: 38px; }
   .hero { padding: 34px 18px 28px; min-height: auto; }
   h1 { font-size: clamp(46px, 17vw, 74px); }
-  .feature-rail, .steps-grid, .benefits-grid, .premium-card ul, .showcase { grid-template-columns: 1fr; }
+  .feature-rail, .steps-grid, .benefits-grid, .premium-card ul, .showcase, .gear-grid { grid-template-columns: 1fr; }
   .feature-rail span { border-right: 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
-  .hero-actions a, .gear-actions a { width: 100%; }
+  .hero-actions a, .support-actions a { width: 100%; }
   .app-shot { width: min(330px, 100%); max-height: 620px; }
   footer { flex-direction: column; align-items: flex-start; }
 }
@@ -509,13 +583,6 @@ footer {
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 22px;
   background: linear-gradient(180deg, rgba(7,21,22,0.9), rgba(2,8,8,0.76));
-}
-.plan-grid .test-plan {
-  border-color: rgba(255,122,26,0.58);
-  box-shadow: 0 0 38px rgba(255,122,26,0.1);
-}
-.plan-grid .test-plan span {
-  color: var(--orange);
 }
 .plan-grid .highlight-plan {
   border-color: rgba(121,255,76,0.55);
