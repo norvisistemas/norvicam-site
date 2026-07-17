@@ -227,31 +227,46 @@
           </ul>
           <a class="primary full" href="./NorviCam.apk">Teste grátis por 3 dias</a>
         </div>
-
+        <div class="checkout-box" aria-label="Pagamento NorviCam Premium">
+          <div>
+            <span class="badge orange">Assinatura segura</span>
+            <h3>Ative pelo mesmo e-mail do app</h3>
+            <p>Informe o e-mail que você usa para entrar no NorviCam. Depois do pagamento aprovado no Asaas, o acesso é liberado automaticamente.</p>
+          </div>
+          <label class="checkout-field" for="checkout-email">
+            <span>E-mail da conta NorviCam</span>
+            <input id="checkout-email" type="email" autocomplete="email" placeholder="seuemail@exemplo.com" />
+          </label>
+          <p class="checkout-message" id="checkout-message">PIX normalmente libera em poucos minutos. Boleto pode demorar mais para compensar.</p>
+        </div>
         <div class="plan-grid">
           <article>
             <span>Mensal</span>
             <strong>R$ 12,90</strong>
             <small>por mês</small>
             <p>Para quem quer começar sem compromisso.</p>
+            <button class="plan-pay" type="button" data-plan="mensal">Assinar mensal</button>
           </article>
           <article class="highlight-plan">
             <span>3 meses</span>
             <strong>R$ 34,90</strong>
             <small>equivale a R$ 11,63/mês</small>
             <p>Desconto para quem já vai usar nas próximas aventuras.</p>
+            <button class="plan-pay" type="button" data-plan="trimestral">Assinar 3 meses</button>
           </article>
           <article>
             <span>6 meses</span>
             <strong>R$ 59,90</strong>
             <small>equivale a R$ 9,98/mês</small>
             <p>Melhor custo-benefício para temporada.</p>
+            <button class="plan-pay" type="button" data-plan="semestral">Assinar 6 meses</button>
           </article>
           <article>
             <span>Anual</span>
             <strong>R$ 99,90</strong>
             <small>equivale a R$ 8,33/mês</small>
             <p>Maior desconto para uso contínuo.</p>
+            <button class="plan-pay" type="button" data-plan="anual">Assinar anual</button>
           </article>
         </div>
       </section>
@@ -279,5 +294,53 @@
       <div class="footer-brand"><span class="brand-mark">N</span><strong>NORVI<span>CAM</span></strong></div>
       <span>Grave. Viva. Compartilhe.</span>
     </footer>
+    <script>
+      const checkoutUrl = "https://raopmnendwyzmkmexgjf.supabase.co/functions/v1/create-payment";
+      const emailInput = document.getElementById("checkout-email");
+      const checkoutMessage = document.getElementById("checkout-message");
+      const planButtons = Array.from(document.querySelectorAll(".plan-pay"));
+
+      function setCheckoutMessage(text, type = "") {
+        checkoutMessage.textContent = text;
+        checkoutMessage.className = `checkout-message ${type}`.trim();
+      }
+
+      function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      }
+
+      async function startCheckout(plan) {
+        const email = emailInput.value.trim().toLowerCase();
+        if (!isValidEmail(email)) {
+          setCheckoutMessage("Informe o mesmo e-mail usado na conta do app antes de escolher o plano.", "error");
+          emailInput.focus();
+          return;
+        }
+
+        planButtons.forEach((button) => { button.disabled = true; });
+        setCheckoutMessage("Criando cobrança segura no Asaas...", "loading");
+
+        try {
+          const response = await fetch(checkoutUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, plan }),
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok || !data.invoiceUrl) {
+            throw new Error(data.error || "Não foi possível criar a cobrança agora.");
+          }
+          setCheckoutMessage("Cobrança criada. Redirecionando para pagamento...", "success");
+          window.location.href = data.invoiceUrl;
+        } catch (error) {
+          setCheckoutMessage(error.message || "Falha ao iniciar pagamento. Tente novamente.", "error");
+          planButtons.forEach((button) => { button.disabled = false; });
+        }
+      }
+
+      planButtons.forEach((button) => {
+        button.addEventListener("click", () => startCheckout(button.dataset.plan));
+      });
+    </script>
   </body>
 </html>
